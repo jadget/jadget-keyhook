@@ -14,23 +14,77 @@ dependencies {
     compile 'net.java.dev.jna:jna-platform:5.1.0'
 }
 
+task sourcesJar(type: Jar, dependsOn: classes) {
+    classifier = 'sources'
+    from sourceSets.main.allSource
+}
+
+javadoc.failOnError = false
+task javadocJar(type: Jar, dependsOn: javadoc) {
+    classifier = 'javadoc'
+    from javadoc.destinationDir
+}
+
+artifacts {
+    archives sourcesJar
+    archives javadocJar
+}
+
+def pomConfig = {
+    licenses {
+        license {
+            name "The Apache Software License, Version 2.0"
+            url "http://www.apache.org/licenses/LICENSE-2.0.txt"
+            distribution "repo"
+        }
+    }
+
+    scm {
+        url "https://github.com/jadget/jadget-keyhook"
+    }
+}
+
+publishing {
+    publications {
+        mavenPublication(MavenPublication) {
+            from components.java
+            artifact sourcesJar {
+                classifier "sources"
+            }
+            artifact javadocJar {
+                classifier "javadoc"
+            }
+            groupId 'net.jadget'
+            artifactId 'jadget-keyhook'
+            version project.version
+            pom.withXml {
+                def root = asNode()
+                root.appendNode('description', 'Java Keyboard Hooks for Windows')
+                root.appendNode('name', 'Jadget-KeyHook')
+                root.appendNode('url', 'https://github.com/jadget/jadget-keyhook')
+                root.children().last() + pomConfig
+            }
+        }
+    }
+}
+
 bintray {
     user = System.getenv('BINTRAY_USER')
     key = System.getenv('BINTRAY_KEY')
 
     pkg {
-        repo = 'maven'
+        repo = 'jadget-keyhook'
         name = 'jadget-keyhook'
         userOrg = 'jadget'
         licenses = ['Apache-2.0']
-        vcsUrl = 'https://github.com/jadget/jadget-keyhook.git'
+        vcsUrl = 'https://github.com/jadget/jadget-keyhook'
 
         version {
-            name = '1.0-Final'
-            desc = 'Gradle Bintray Plugin 1.0 final'
+            name = project.version
+            desc = "Jadget KeyHook Release Build"
             released  = new Date()
-            vcsTag = '1.3.0'
-            attributes = ['gradle-plugin': 'com.use.less:com.use.less.gradle:gradle-useless-plugin']
         }
     }
+
+    publish = true
 }
