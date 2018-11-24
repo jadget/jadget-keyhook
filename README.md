@@ -4,6 +4,11 @@
 
 This library provides a JNA based solution for installing keyboard hooks on windows systems.
 
+Dependency (Gradle)
+
+    compile 'net.jadget:jadget-keyhook:1.0.1'
+
+
 The library is fairly trivial, just create an instance of the KeyHook class, call start() and add listeners
 
 Example program:
