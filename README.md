@@ -11,3 +11,6 @@ Example program:
         Thread.sleep(10000);
         hook.stop();
     }
+
+
+For more details please consult the javadocs
