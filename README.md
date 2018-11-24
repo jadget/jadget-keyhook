@@ -1,3 +1,5 @@
+[ ![Bintray](https://api.bintray.com/packages/jadget/jadget-keyhook/jadget-keyhook/images/download.svg) ](https://bintray.com/jadget/jadget-keyhook/jadget-keyhook/_latestVersion)
+
 # Java Keyboard Hooks for Windows
 
 This library provides a JNA based solution for installing keyboard hooks on windows systems.
